@@ -39,9 +39,17 @@ type SqlAlias<ColumnNames extends string> = ColumnNames extends ColumnNames ?
 type y = SqlAlias<'id'>
 // type y = `id as ${string}`
 
+type Columns<ColumnNames extends string> = ColumnNames | SqlAlias<ColumnNames>
+
+// test
+//
+// if done right, should accept column names and `column as string_alias`
+type z = Columns<'id' | 'first_name'>;
+// type z = "id" | "first_name" | `id as ${string}` | `first_name as ${string}
+
 declare function select<
     Name extends TableNames,
-    Column extends keyof (Tables[Name] | SqlAlias<keyof Tables[Name]>),
+    Column extends keyof Columns<keyof Tables[Name] & string>
 >(tableName: Name, columns: Column[]): void;
 
 // select("house","")
