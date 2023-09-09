@@ -17,17 +17,18 @@ type Tables = {
 type TableNames = keyof Tables
 
 type Alias<
-    ColumnNames extends string,
     T extends string
-> = T extends `${ColumnNames} as ${infer A}` ? A : never;
+> = T extends `${string} as ${infer A}` ? A : never;
 
 // test
 //
 // you throw the columns before the comma `,`
 // and after that you can alias a column
 // typescript should infer which column are you speaking of
-type x = Alias<'id' | 'first_name', 'first_name as firstName'>
+type x = Alias<'first_name as firstName'>
 // type x = "first_name"
+
+type Original<T extends string> = T extends `${infer O} as ${string}` ? O : never;
 
 type SqlAlias<ColumnNames extends string> = ColumnNames extends ColumnNames ?
     `${ColumnNames} as ${string}` :
@@ -49,16 +50,23 @@ type z = Columns<'id' | 'first_name'>;
 
 type SelectReturn<
     Name extends TableNames,
-    SelectedColumns extends Columns<keyof Tables[Name] & string>
+    Column extends Columns<keyof Tables[Name] & string>
 > = {
-    name: Name,
-    cols: SelectedColumns
+    [C in Column as 
+        Alias<C> extends never ? 
+        C : 
+        Alias<C>
+    ]: C extends keyof Tables[Name] ? 
+        Tables[Name][C] : 
+            Original<C> extends keyof Tables[Name] ?
+            Tables[Name][Original<C>] :
+            never; // unreachable
 };
 
 declare function select<
     Name extends TableNames,
-    SelectedColumns extends Columns<keyof Tables[Name] & string>,
->(tableName: Name, columns: SelectedColumns[]): SelectReturn<Name, SelectedColumns>;
+    Column extends Columns<keyof Tables[Name] & string>
+>(tableName: Name, columns: Column[]): SelectReturn<Name, Column>;
 
 // select("house","")
 // Error:Argument of type '"house"' is not assignable to parameter of type '"person"' or '"product"'
@@ -75,14 +83,14 @@ const person_table = select('person', ['first_name', 'id as identification'])
 
 // utility type
 type Flat<T> = {
-    [K in keyof T]: T[K]
+    [K in keyof T]: T[K];
 }
 
 // if you flatten a table, you should get 
-// the name of the table
-// and the union of columns
+// the keys of the columns
+// and the type of the Table-defined types for each colum
 type flatted_table = Flat<typeof person_table>
 // type flatted_table = {
-//     name: "person";
-//     cols: "first_name" | "id as identification";
+//     first_name: string,
+//     identification: number,
 // }
