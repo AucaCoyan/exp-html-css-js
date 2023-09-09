@@ -36,10 +36,10 @@ type SqlAlias<ColumnNames extends string> = ColumnNames extends ColumnNames ?
 // test
 //
 // if it is done right should accept id as SomeRandomStringYouWantToWriteAsAlias
-type y = SqlAlias<'id'>
+type y = SqlAlias<'id'>;
 // type y = `id as ${string}`
 
-type Columns<ColumnNames extends string> = ColumnNames | SqlAlias<ColumnNames>
+type Columns<ColumnNames extends string> = ColumnNames | SqlAlias<ColumnNames>;
 
 // test
 //
@@ -49,7 +49,7 @@ type z = Columns<'id' | 'first_name'>;
 
 declare function select<
     Name extends TableNames,
-    Column extends keyof Columns<keyof Tables[Name] & string>
+    Column extends Columns<keyof Tables[Name] & string>
 >(tableName: Name, columns: Column[]): void;
 
 // select("house","")
@@ -62,5 +62,5 @@ declare function select<
 // it needs to be an array of column names
 // and matches only the columns of person.keys()
 
-select('person', ['first_name'])
+const person_table = select('person', ['id as id'])
 // ok
