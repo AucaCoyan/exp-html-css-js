@@ -29,10 +29,20 @@ type Alias<
 type x = Alias<'id' | 'first_name', 'first_name as firstName'>
 // type x = "first_name"
 
+type SqlAlias<ColumnNames extends string> = ColumnNames extends ColumnNames ?
+    `${ColumnNames} as ${string}` :
+    never;
+
+// test
+//
+// if it is done right should accept id as SomeRandomStringYouWantToWriteAsAlias
+type y = SqlAlias<'id'>
+// type y = `id as ${string}`
+
 declare function select<
     Name extends TableNames,
-    Column extends keyof Tables[Name],
->(tableName: Name, columns: Column[]): void
+    Column extends keyof (Tables[Name] | SqlAlias<keyof Tables[Name]>),
+>(tableName: Name, columns: Column[]): void;
 
 // select("house","")
 // Error:Argument of type '"house"' is not assignable to parameter of type '"person"' or '"product"'
