@@ -47,10 +47,18 @@ type Columns<ColumnNames extends string> = ColumnNames | SqlAlias<ColumnNames>;
 type z = Columns<'id' | 'first_name'>;
 // type z = "id" | "first_name" | `id as ${string}` | `first_name as ${string}
 
+type SelectReturn<
+    Name extends TableNames,
+    SelectedColumns extends Columns<keyof Tables[Name] & string>
+> = {
+    name: Name,
+    cols: SelectedColumns
+};
+
 declare function select<
     Name extends TableNames,
-    Column extends Columns<keyof Tables[Name] & string>
->(tableName: Name, columns: Column[]): void;
+    SelectedColumns extends Columns<keyof Tables[Name] & string>,
+>(tableName: Name, columns: SelectedColumns[]): SelectReturn<Name, SelectedColumns>;
 
 // select("house","")
 // Error:Argument of type '"house"' is not assignable to parameter of type '"person"' or '"product"'
@@ -62,5 +70,19 @@ declare function select<
 // it needs to be an array of column names
 // and matches only the columns of person.keys()
 
-const person_table = select('person', ['id as id'])
+const person_table = select('person', ['first_name', 'id as identification'])
 // ok
+
+// utility type
+type Flat<T> = {
+    [K in keyof T]: T[K]
+}
+
+// if you flatten a table, you should get 
+// the name of the table
+// and the union of columns
+type flatted_table = Flat<typeof person_table>
+// type flatted_table = {
+//     name: "person";
+//     cols: "first_name" | "id as identification";
+// }
