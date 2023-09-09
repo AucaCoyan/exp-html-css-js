@@ -16,6 +16,19 @@ type Tables = {
 
 type TableNames = keyof Tables
 
+type Alias<
+    ColumnNames extends string,
+    T extends string
+> = T extends `${ColumnNames} as ${infer A}` ? A : never;
+
+// test
+//
+// you throw the columns before the comma `,`
+// and after that you can alias a column
+// typescript should infer which column are you speaking of
+type x = Alias<'id' | 'first_name', 'first_name as firstName'>
+// type x = "first_name"
+
 declare function select<
     Name extends TableNames,
     Column extends keyof Tables[Name],
