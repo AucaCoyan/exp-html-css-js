@@ -40,9 +40,9 @@ function sendQuery(options: QueryOptions): string {
         case 'widgets':
             id = options.widgetId;
             break
-//         case 'sessions':
-//             id = options.sessionId;
-//             break
+        case 'sessions':
+            id = options.sessionId;
+            break
         default:
             assertCannotReach(options)
             // argument table.session which is a string
