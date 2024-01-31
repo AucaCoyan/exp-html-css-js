@@ -5,11 +5,20 @@
 }
 
 :root {
+    /* check https://cssgradient.io/gradient-backgrounds/ 
+    for great color matchings!
+    */
     --color-1: #052b2f;
     --color-2: #073438;
     --color-3: #0e4b50;
     --color-4: #2d8f85;
     --color-5: #637c54;
+
+/*     --color-1: #052b2f;
+    --color-2: #073438;
+    --color-3: #833ab4;
+    --color-4: #fd1d1d;
+    --color-5: #fcb045; */
 }
 
 body {
