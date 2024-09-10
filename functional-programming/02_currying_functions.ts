@@ -5,7 +5,7 @@ function normal_sum(a: number, b: number) {
 console.log(normal_sum(1, 2));
 
 function curried_sum(a: number) {
-	return function(b: number) { a + b }
+	return function (b: number) { a + b }
 }
 
 console.log(curried_sum(1)(2));
@@ -14,7 +14,7 @@ type Sum = (a: number) => (b: number) => number
 
 const sum_arrow: Sum = (a) => (b) => a + b;
 
-type Increment = (a: number) => number
+export type Increment = (a: number) => number
 
 //const increment_fn: Increment = (a) => sum_arrow(a)(1);
 const increment_fn: Increment = sum_arrow(1);
