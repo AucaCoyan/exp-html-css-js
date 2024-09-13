@@ -1,15 +1,10 @@
 # nx-scripts
 
-To install dependencies:
+Operations I would want to do:
 
-```bash
-bun install
-```
+- [ ] increment the bugfix dependency number (x.x.+1)
+- [ ] increment the minor dependency number (x.+1.x)
+- [ ] increment the major dependency number (+1.x.x)
 
-To run:
-
-```bash
-bun run src/index.ts
-```
-
-This project was created using `bun init` in bun v1.1.18. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
+- [ ] print the current version of all my workspace dependencies in a table
+- [ ] compare these versions with another branch (for example main, or QA envs)
