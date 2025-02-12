@@ -1,0 +1,11 @@
+{
+  "name": "ways-to-do-requests",
+  "module": "index.js",
+  "type": "commonjs",
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  }
+}
