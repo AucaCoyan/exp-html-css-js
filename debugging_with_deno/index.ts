@@ -17,7 +17,6 @@ async function createUser(): Promise<string> {
     return id;
 }
 
-console.log(createUser());
 const app = new Hono();
 
 app.get("/", async (c) => {
