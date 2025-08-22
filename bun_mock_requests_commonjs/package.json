@@ -1,0 +1,16 @@
+{
+  "name": "bun_mock_requests",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "axios": "^1.11.0",
+    "jest": "^30.0.5"
+  }
+}
